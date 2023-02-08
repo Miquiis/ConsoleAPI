@@ -36,6 +36,18 @@ public class ConsoleAPI
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public static Map<String, Float> getClientFloatVariables() {
+        return CLIENT_FLOAT_VARIABLES;
+    }
+
+    public static Map<String, Integer> getClientIntegerVariables() {
+        return CLIENT_INTEGER_VARIABLES;
+    }
+
+    public static Map<String, String> getClientStringVariables() {
+        return CLIENT_STRING_VARIABLES;
+    }
+
     private static boolean isServerSide()
     {
         return Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER;
@@ -75,9 +87,23 @@ public class ConsoleAPI
     {
         if (isServerSide())
         {
-            return SERVER_FLOAT_VARIABLES.getOrDefault(variable, defaultValue);
+            return SERVER_FLOAT_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         } else {
-            return CLIENT_FLOAT_VARIABLES.getOrDefault(variable, defaultValue);
+            return CLIENT_FLOAT_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         }
     }
 
@@ -85,9 +111,23 @@ public class ConsoleAPI
     {
         if (isServerSide())
         {
-            return SERVER_INTEGER_VARIABLES.getOrDefault(variable, defaultValue);
+            return SERVER_INTEGER_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         } else {
-            return CLIENT_INTEGER_VARIABLES.getOrDefault(variable, defaultValue);
+            return CLIENT_INTEGER_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         }
     }
 
@@ -95,9 +135,23 @@ public class ConsoleAPI
     {
         if (isServerSide())
         {
-            return SERVER_STRING_VARIABLES.getOrDefault(variable, defaultValue);
+            return SERVER_STRING_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         } else {
-            return CLIENT_STRING_VARIABLES.getOrDefault(variable, defaultValue);
+            return CLIENT_STRING_VARIABLES.compute(variable, (_variable, _value) -> {
+                if (_value == null)
+                {
+                    return defaultValue;
+                } else {
+                    return _value;
+                }
+            });
         }
     }
 
@@ -105,6 +159,15 @@ public class ConsoleAPI
     {
         instance = this;
         ModNetwork.init();
+
+        getFloatVariable("floatExample1", 1f);
+        getFloatVariable("floatExample2", 2f);
+
+        getStringVariable("stringExample1", "1");
+        getStringVariable("stringExample2", "2");
+
+        getIntegerVariable("integerExample1", 1);
+        getIntegerVariable("integerExample2", 2);
     }
 
     public static ConsoleAPI getInstance() {
