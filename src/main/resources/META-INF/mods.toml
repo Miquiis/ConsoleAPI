@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+license = "All rights reserved"
+[[mods]]
+modId = "consoleapi"
+version = "${file.jarVersion}"
+displayName = "ConsoleAPI"
+description = "ConsoleAPI is a developer mod to help save time debugging values rather from inside the IDE but in-game. You can set variables in the IDE and dynamically change them in-game to save time rebuilding."
+
+[dependencies]
+[[dependencies.consoleapi]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.consoleapi]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,1.17)"
+ordering = "NONE"
+side = "BOTH"
+
