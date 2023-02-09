@@ -97,7 +97,7 @@ public class Console {
         {
             currentPreviousCommandIndex = Math.min(previousCommands.size(), currentPreviousCommandIndex + 1);
         } else {
-            currentPreviousCommandIndex = Math.max(0, currentPreviousCommandIndex - 1);
+            currentPreviousCommandIndex = Math.max(1, currentPreviousCommandIndex - 1);
         }
         consoleInputField.setText(previousCommands.get(currentPreviousCommandIndex - 1));
     }
