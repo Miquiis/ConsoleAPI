@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "me.miquiis.consoleapi.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "consoleapi.mixin-refmap.json",
+  "minVersion": "0.8",
+  "client": [
+    "client.KeyboardListenerMixin",
+    "client.MinecraftMixin"
+  ]
+}

@@ -1,5 +1,7 @@
 package me.miquiis.consoleapi;
 
+import me.miquiis.consoleapi.client.ClientKeybinds;
+import me.miquiis.consoleapi.client.Console;
 import me.miquiis.consoleapi.server.commands.ModCommand;
 import me.miquiis.consoleapi.server.network.ModNetwork;
 import net.minecraftforge.common.MinecraftForge;
@@ -8,6 +10,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.thread.SidedThreadGroups;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.server.command.ConfigCommand;
@@ -30,10 +33,38 @@ public class ConsoleAPI
     private static final Map<String, Integer> CLIENT_INTEGER_VARIABLES = new HashMap<>();
     private static final Map<String, Integer> SERVER_INTEGER_VARIABLES = new HashMap<>();
 
+    private Console console;
+
     public ConsoleAPI() {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::onClientSetupEvent);
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void setup(final FMLCommonSetupEvent event)
+    {
+        instance = this;
+        ModNetwork.init();
+    }
+
+    private void onClientSetupEvent(final FMLClientSetupEvent event)
+    {
+        console = new Console();
+    }
+
+    @SubscribeEvent
+    public void onCommandRegister(RegisterCommandsEvent event) {
+        new ModCommand(event.getDispatcher());
+        ConfigCommand.register(event.getDispatcher());
+    }
+
+    public static ConsoleAPI getInstance() {
+        return instance;
+    }
+
+    public Console getConsole() {
+        return console;
     }
 
     public static Map<String, Float> getClientFloatVariables() {
@@ -153,30 +184,5 @@ public class ConsoleAPI
                 }
             });
         }
-    }
-
-    private void setup(final FMLCommonSetupEvent event)
-    {
-        instance = this;
-        ModNetwork.init();
-
-        getFloatVariable("floatExample1", 1f);
-        getFloatVariable("floatExample2", 2f);
-
-        getStringVariable("stringExample1", "1");
-        getStringVariable("stringExample2", "2");
-
-        getIntegerVariable("integerExample1", 1);
-        getIntegerVariable("integerExample2", 2);
-    }
-
-    public static ConsoleAPI getInstance() {
-        return instance;
-    }
-
-    @SubscribeEvent
-    public void onCommandRegister(RegisterCommandsEvent event) {
-        new ModCommand(event.getDispatcher());
-        ConfigCommand.register(event.getDispatcher());
     }
 }

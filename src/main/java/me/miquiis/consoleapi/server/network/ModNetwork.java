@@ -1,6 +1,7 @@
 package me.miquiis.consoleapi.server.network;
 
 import me.miquiis.consoleapi.ConsoleAPI;
+import me.miquiis.consoleapi.server.network.messages.ExecuteConsoleCommandPacket;
 import me.miquiis.consoleapi.server.network.messages.SendVariablePacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -17,6 +18,7 @@ public class ModNetwork {
 
     public static void init() {
         CHANNEL.registerMessage(0, SendVariablePacket.class, SendVariablePacket::encodePacket, SendVariablePacket::decodePacket, SendVariablePacket::handlePacket);
+        CHANNEL.registerMessage(1, ExecuteConsoleCommandPacket.class, ExecuteConsoleCommandPacket::encodePacket, ExecuteConsoleCommandPacket::decodePacket, ExecuteConsoleCommandPacket::handlePacket);
     }
 
 }
